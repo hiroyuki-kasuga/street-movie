@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load i18n %}{% load staticfiles %}{% load common_public %}
+<head>
+
+    <meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    {% block ogp %}
+{#    <meta property="og:type" content="article"/>#}
+{#    <meta property="fb:app_id" content="{{ 'FB_APP_ID'|get_settings }}"/>#}
+{#    <meta property="og:title" content="{{ 'FB_OGP_SITE_TITLE'|get_settings }}"/>#}
+{#    <meta property="og:description" content="{{ 'FB_OGP_SITE_DESCRIPTION'|get_settings }}"/>#}
+{#    <meta property="og:url" content="{{ url }}"/>#}
+{#    <meta property="og:image" content="{% static 'img/ogp.jpg' %}"/>#}
+    {% endblock ogp %}
+
+    <title>{% block title %}{% endblock %}</title>
+
+    {% block css %}{% endblock css %}
+</head>
+<body>
+{% block main %}{% endblock main %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+{% block script %}{% endblock script %}
+</body>
+</html>
