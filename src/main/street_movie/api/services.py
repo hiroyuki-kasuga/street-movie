@@ -32,7 +32,7 @@ class CreateMovieService:
 
         file_name = str(uuid.uuid4()) + '.mp4'
         dest = os.path.join(settings.MOVIE_DEST_PATH, file_name)
-        command = '/usr/local/bin/ffmpeg -r 1 -i ' + self.dir_path + '/%05d.jpg -vcodec libx264 -qscale:v 0 ' + dest
+        command = settings.FFMPEG_COMMAND % (self.dir_path, dest)
         (status, output) = commands.getstatusoutput(command)
         if status == 0:
             model = Movie()
@@ -52,8 +52,7 @@ class CreateMovieService:
         if direction:
             heading = '&heading=' + str(direction)
 
-        url = 'http://maps.googleapis.com/maps/api/streetview?size=600x300&location=' + str(json['lat']) + ',%20' + str(
-            json['lng']) + '&sensor=false' + heading
+        url = settings.STREET_VIEW_URL % (str(json['lat']), str(json['lng']), heading)
 
         logger.debug('google url %s' % url)
         request = urllib2.Request(url)
@@ -64,13 +63,13 @@ class CreateMovieService:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
             logger.error(''.join('!! ' + line for line in lines))
-            # raise e
+            raise e
         except urllib2.URLError, e:
             logger.error(e)
             exc_type, exc_value, exc_traceback = sys.exc_info()
             lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
             logger.error(''.join('!! ' + line for line in lines))
-            # raise e
+            raise e
         else:
             file = '%s/%05d.jpg' % (self.dir_path, i)
             f = open(file, "wb")
