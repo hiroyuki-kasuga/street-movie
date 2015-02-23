@@ -30,11 +30,63 @@ clone this project
     
 install add module   
 
-    pip install -r misc/pip
+    pip install -r path/to/misc/pip
     
 utf-8
 
     echo "import sys; sys.setdefaultencoding('utf-8')" > /path/to/site-packages/sitecustomize.py
+    
+change name settings_template.py and wsgi_template.py
+
+    mv path/to/settings_template.py settings.py
+    mv path/to/wsgi_template.py wsgi.py
+    
+change setting.py
+
+    #change database settings
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': 'street_movie',  # Or path to database file if using sqlite3.
+            'USER': 'street_movie',  # Not used with sqlite3.
+            'PASSWORD': 'changeme',  # Not used with sqlite3.
+            'HOST': 'localhost',  # Set to empty string for localhost. Not used with sqlite3.
+            'PORT': '3306',  # Set to empty string for default. Not used with sqlite3.
+            'OPTIONS': {"init_command": "SET storage_engine=INNODB"},
+            'ATOMIC_REQUEST': True,
+        }
+    }
+    .......
+    #change log file path
+    LOGGING = {
+        .....
+        'handlers': {
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.handlers.RotatingFileHandler',
+                'filename': '/path/to/app.log',
+                'maxBytes': 1024 * 1024 * 5 * 100,  # 500MB
+                'backupCount': 10,
+                'formatter': 'standard'
+            },
+        .....
+        },
+        'loggers': {
+        .....
+        }
+    }
+    .....
+    #change movie temporary destination path
+    MOVIE_DEST_PATH = '/path/to/temporary/movie/directory'
+    .....
+    
+    #change S3 access_key, secret_access_key and bucket_name
+    AWS_ACCESS_KEY_ID = 'aws_access_key'
+    AWS_SECRET_ACCESS_KEY = 'aws_secret_access_key'
+    AWS_STORAGE_BUCKET_NAME = 'bucket_name'
+    .....
+    #change ffmpeg command path
+    FFMPEG_COMMAND = '/path/to/ffmpeg -r 1 -i %s/%%05d.jpg -vcodec libx264 -qscale:v 0 %s'
     
 DB migration
 
