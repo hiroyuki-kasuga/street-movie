@@ -52,7 +52,7 @@ class CreateMovieService:
         if direction:
             heading = '&heading=' + str(direction)
 
-        url = settings.STREET_VIEW_URL % (str(json['lat']), str(json['lng']), heading)
+        url = settings.STREET_VIEW_URL % (json['lat'], json['lng'], heading)
 
         logger.debug('google url %s' % url)
         request = urllib2.Request(url)
