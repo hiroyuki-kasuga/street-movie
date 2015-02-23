@@ -1,6 +1,6 @@
 # street-movie
 Google StreetView picture generate to movie, written in Python  
-![](https://github.com/hiroyuki-kasuga/street-movie/tree/master/misc/street_movie.gif)
+![optimized](https://github.com/hiroyuki-kasuga/street-movie/blob/master/misc/street_movie.gif?raw=true)
 
 ## Requirement
 Python 2.7+  
@@ -32,10 +32,20 @@ install add module
 
     pip install -r misc/pip
     
+utf-8
+
+    echo "import sys; sys.setdefaultencoding('utf-8')" > /path/to/site-packages/sitecustomize.py
+    
+DB migration
+
+    cd path/to/src/main/street_movie/
+    python ./manage.py syncdb
+    
+    
 start server
 
     cd path/to/src/main/street_movie/
-    python manage.py runserver
+    python ./manage.py runserver
 
 ## Licence
 
