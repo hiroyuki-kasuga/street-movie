@@ -56,3 +56,6 @@ docs/_build/
 target/
 
 settings.py
+wsgi.py
+settings_production.py
+wsgi_production.py
