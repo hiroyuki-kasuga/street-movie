@@ -34,7 +34,7 @@ var googlemap = (function () {
         directionsService = new google.maps.DirectionsService(),
         markerALatLon = currentCenter,
         markerBLatLon = new google.maps.LatLng(35.681382 - 0.001, 139.766084),
-        markerA, markerB, streetViewLayer, movieLatLngList = [];
+        markerA, markerB, streetViewLayer, movieLatLngList = [], circle;
 
     return {
         init: function () {
@@ -44,6 +44,7 @@ var googlemap = (function () {
                 }
                 windowResizeTimer = setTimeout(function () {
                     map.setCenter(currentCenter);
+                    googlemap.showCircle();
                 }, 200);
             });
 
@@ -70,11 +71,13 @@ var googlemap = (function () {
             $('.cmd-over-settings').on('click', function (e) {
                 e.preventDefault();
                 $('.operation-area').addClass('move');
+                googlemap.showCircle();
             });
 
             $('.cmd-hide-operation-area').on('click', function (e) {
                 e.preventDefault();
                 $('.operation-area').removeClass('move');
+                googlemap.hideCircle();
             });
 
             $('.cmd-search').on('click', function (e) {
@@ -126,8 +129,27 @@ var googlemap = (function () {
             });
 
             $('.cmd-over-settings').trigger('click');
+            googlemap.showCircle();
             googlemap.createMarkerA();
             googlemap.createMarkerB();
+        },
+        hideCircle: function () {
+            //if(circle){
+            //    circle.setMap(null);
+            //}
+        },
+        showCircle: function () {
+            //googlemap.hideCircle();
+            //circle = new google.maps.Circle({
+            //    strokeColor: "#FF0000",
+            //    strokeOpacity: 0.8,
+            //    strokeWeight: 2,
+            //    fillColor: "#FF0000",
+            //    fillOpacity: 0.35,
+            //    map: map,
+            //    center: currentCenter,
+            //    radius: 1000
+            //});
         },
         search: function () {
             var searchSpot = $('#search_spot').val(),
@@ -147,7 +169,7 @@ var googlemap = (function () {
                 map.setCenter(currentCenter);
                 googlemap.createMarkerA();
                 googlemap.createMarkerB();
-
+                googlemap.showCircle();
             });
         },
         createMarkerA: function () {
@@ -206,6 +228,11 @@ var googlemap = (function () {
             map.overlayMapTypes.push(streetViewLayer);
         },
         startRoute: function () {
+            var d = Math.round(google.maps.geometry.spherical.computeDistanceBetween(markerALatLon, markerBLatLon));
+            if (d > 1500) {
+                alert("1500m以内を選択してください。");
+                return false;
+            }
             var request = {
                 origin: markerALatLon,
                 destination: markerBLatLon,
