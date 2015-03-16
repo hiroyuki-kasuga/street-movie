@@ -204,6 +204,7 @@ div.operation-area {
   -moz-opacity: 0.9;
   opacity: 0.9;
   background-image: -webkit-linear-gradient(left, rgb(35, 37, 38), rgb(65, 67, 69));
+  background-image: -moz-linear-gradient(left, rgb(35, 37, 38), rgb(65, 67, 69));
   background-color: rgb(255, 255, 255);
   background-color: rgb(255, 255, 255);
   -webkit-transition: all 0.5s linear;
