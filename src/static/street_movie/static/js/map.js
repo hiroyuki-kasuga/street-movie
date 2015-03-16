@@ -34,7 +34,7 @@ var googlemap = (function () {
         directionsService = new google.maps.DirectionsService(),
         markerALatLon = currentCenter,
         markerBLatLon = new google.maps.LatLng(35.681382 - 0.001, 139.766084),
-        markerA, markerB, streetViewLayer, movieLatLngList = [], circle;
+        markerA, markerB, streetViewLayer, movieLatLngList = [], circle, isEnableCreateMovie = false;
 
     return {
         init: function () {
@@ -113,6 +113,12 @@ var googlemap = (function () {
                     startLon = markerALatLon.lng().toFixed(6),
                     endLat = markerBLatLon.lat().toFixed(6),
                     endLon = markerBLatLon.lng().toFixed(6);
+
+                if(!isEnableCreateMovie){
+                    alert("開始地点と終了地点を指定してください。");
+                    return;
+                }
+
                 $loading.show();
                 $.ajax(url, {
                     data: {latLng: latLng, csrfmiddlewaretoken: csrfToken, start_lat: startLat, start_lon: startLon, end_lat: endLat, end_lon: endLon},
@@ -233,6 +239,7 @@ var googlemap = (function () {
                 alert("1500m以内を選択してください。");
                 return false;
             }
+            isEnableCreateMovie = true;
             var request = {
                 origin: markerALatLon,
                 destination: markerBLatLon,
