@@ -2,15 +2,22 @@ var googlemap = (function () {
     var markerList = new google.maps.MVCArray(),
         latlng = new google.maps.LatLng(35.681382, 139.766084),
         geocoder = new google.maps.Geocoder(),
-        opts = {zoom: 16, mapTypeId: google.maps.MapTypeId.ROADMAP, center: latlng, mapTypeControl: false, panControl: false, streetViewControl: false},
+        opts = {
+            zoom: 16,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            center: latlng,
+            mapTypeControl: false,
+            panControl: false,
+            streetViewControl: false
+        },
         samplestyle = [
             {
                 "stylers": [
-                    { "visibility": "on" },
-                    { "weight": 1.2 },
-                    { "saturation": 22 },
-                    { "lightness": 26 },
-                    { "gamma": 1.51 }
+                    {"visibility": "on"},
+                    {"weight": 1.2},
+                    {"saturation": 22},
+                    {"lightness": 26},
+                    {"gamma": 1.51}
                 ]
             }
         ],
@@ -114,14 +121,21 @@ var googlemap = (function () {
                     endLat = markerBLatLon.lat().toFixed(6),
                     endLon = markerBLatLon.lng().toFixed(6);
 
-                if(!isEnableCreateMovie){
+                if (!isEnableCreateMovie) {
                     alert("開始地点と終了地点を指定してください。");
                     return;
                 }
 
                 $loading.show();
                 $.ajax(url, {
-                    data: {latLng: latLng, csrfmiddlewaretoken: csrfToken, start_lat: startLat, start_lon: startLon, end_lat: endLat, end_lon: endLon},
+                    data: {
+                        latLng: latLng,
+                        csrfmiddlewaretoken: csrfToken,
+                        start_lat: startLat,
+                        start_lon: startLon,
+                        end_lat: endLat,
+                        end_lon: endLon
+                    },
                     dataType: 'json',
                     type: 'POST'
                 }).done(function (data) {
@@ -176,6 +190,7 @@ var googlemap = (function () {
                 googlemap.createMarkerA();
                 googlemap.createMarkerB();
                 googlemap.showCircle();
+                googlemap.hideAddress();
             });
         },
         createMarkerA: function () {
@@ -197,6 +212,7 @@ var googlemap = (function () {
                 map.overlayMapTypes.pop();
                 markerALatLon = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
                 googlemap.startRoute();
+                googlemap.getAddress();
             });
             markerA.setMap(map);
         },
@@ -219,6 +235,7 @@ var googlemap = (function () {
                 map.overlayMapTypes.pop();
                 markerBLatLon = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
                 googlemap.startRoute();
+                googlemap.getAddress();
             });
             markerB.setMap(map);
         },
@@ -232,6 +249,36 @@ var googlemap = (function () {
                 isPng: true
             });
             map.overlayMapTypes.push(streetViewLayer);
+        },
+        hideAddress: function(){
+            var $startAddressArea = $('#start-address-area'),
+                $endAddressArea = $('#end-address-area');
+            $startAddressArea.hide();
+            $endAddressArea.hide();
+        },
+        getAddress: function () {
+            var $startAddressArea = $('#start-address-area'),
+                $endAddressArea = $('#end-address-area'),
+                $startAddress = $('#start-address'),
+                $endAddress = $('#end-address');
+            new google.maps.Geocoder().geocode({latLng: markerALatLon}, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    // results.length > 1 で返ってくる場合もありますが・・・。
+                    if (results[0].geometry) {
+                        $startAddress.html(results[0].formatted_address.replace(/^日本, /, ''));
+                        $startAddressArea.show();
+                    }
+                }
+            });
+            new google.maps.Geocoder().geocode({latLng: markerBLatLon}, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    // results.length > 1 で返ってくる場合もありますが・・・。
+                    if (results[0].geometry) {
+                        $endAddress.html(results[0].formatted_address.replace(/^日本, /, ''));
+                        $endAddressArea.show();
+                    }
+                }
+            });
         },
         startRoute: function () {
             var d = Math.round(google.maps.geometry.spherical.computeDistanceBetween(markerALatLon, markerBLatLon));
