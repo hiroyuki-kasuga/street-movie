@@ -30,11 +30,11 @@
     <div id="map">
     </div>
     {#    <div class="mask cmd-unmask"></div>#}
-    <div class="settings circle  settings-show">
+    <div class="settings no-anim-circle  settings-show">
         <a href="#" class="cmd-over-settings"><img src="{% static 'img/icon-route.png' %}"></a>
     </div>
     <div class="operation-area">
-        <div class="settings circle">
+        <div class="settings no-anim-circle">
             <a href="#" class="cmd-hide-operation-area"><img src="{% static 'img/icon-route.png' %}"></a>
         </div>
         <form role="form">
@@ -55,6 +55,18 @@
                     src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=E%7CFFFFFF%7C000000"/>地点を指定してください。
             </p>
 
+            <p id="start-address-area" style="display: none;">
+                <img id="start_img"
+                     src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=S%7CFFFFFF%7C000000"/>
+                <span id="start-address">東京都</span>
+            </p>
+
+            <p id="end-address-area" style="display: none;">
+                <img id="end_img"
+                     src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=E%7CFFFFFF%7C000000"/>
+                <span id="end-address">東京都</span>
+            </p>
+
             <div class="center-arrow">
                 <p>▼</p>
             </div>
@@ -67,7 +79,8 @@
 {% endblock %}
 
 {% block script %}
-    <script src="//maps.google.com/maps/api/js?v=3&libraries=geometry&sensor=false" type="text/javascript" charset="UTF-8"></script>
+    <script src="//maps.google.com/maps/api/js?v=3&libraries=geometry&sensor=false" type="text/javascript"
+            charset="UTF-8"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="{% static "js/json2.js" %}"></script>
     <script src="{% static "js/map.js" %}"></script>
