@@ -250,7 +250,7 @@ var googlemap = (function () {
             });
             map.overlayMapTypes.push(streetViewLayer);
         },
-        hideAddress: function(){
+        hideAddress: function () {
             var $startAddressArea = $('#start-address-area'),
                 $endAddressArea = $('#end-address-area');
             $startAddressArea.hide();
@@ -301,33 +301,42 @@ var googlemap = (function () {
                     movieLatLngList = [];
                     $.each(response.routes[0].overview_path, function (k, v) {
                         //console.log('http://maps.googleapis.com/maps/api/streetview?size=600x300&location=' + v.lat() + ',%20' + v.lng() + '&sensor=false');
+                        var latLng1 = new google.maps.LatLng(v.lat(), v.lng()), latLng2, meter, formatMeter, radius;
+
+                        if (response.routes[0].overview_path.length - 1 == k) {
+                            var tmpLatLng = movieLatLngList[movieLatLngList.length - 1];
+                            radius = tmpLatLng.radius;
+                        } else {
+                            latLng2 = new google.maps.LatLng(response.routes[0].overview_path[k + 1].lat(), response.routes[0].overview_path[k + 1].lng());
+                            meter = google.maps.geometry.spherical.computeDistanceBetween(latLng1, latLng2);
+                            formatMeter = meter.toFixed(0);
+                            radius = googlemap.geoDirection(latLng1.lat(), latLng1.lng(), latLng2.lat(), latLng2.lng());
+                        }
+
                         if (k !== 0) {
-                            var latLng1 = new google.maps.LatLng(v.lat(), v.lng()),
-                                latLng2 = new google.maps.LatLng(response.routes[0].overview_path[k - 1].lat(), response.routes[0].overview_path[k - 1].lng()),
-                                meter = google.maps.geometry.spherical.computeDistanceBetween(latLng1, latLng2);
-//                                formatMeter = meter.toFixed(0),
-//                                radius = googlemap.geoDirection(latLng1.lat(), latLng1.lng(), latLng2.lat(), latLng2.lng());
                             movieLatLngList.push({
                                 lat: latLng1.lat(),
-                                lng: latLng1.lng()
+                                lng: latLng1.lng(),
+                                radius: radius
                             });
 
-//                            for (var i = 5; i < formatMeter; i++) {
-//                                var latLng3 = google.maps.geometry.spherical.computeOffset(latLng1, i, radius);
-//                                movieLatLngList.push({
-//                                    lat: latLng3.lat(),
-//                                    lng: latLng3.lng()
-//                                });
-//                            }
+                            for (var i = 300; i < formatMeter; i++) {
+                                var latLng3 = google.maps.geometry.spherical.computeOffset(latLng1, i, radius);
+                                movieLatLngList.push({
+                                    lat: latLng3.lat(),
+                                    lng: latLng3.lng(),
+                                    radius: radius
+                                });
+                            }
 
                         } else {
                             movieLatLngList.push({
                                 lat: v.lat(),
-                                lng: v.lng()
+                                lng: v.lng(),
+                                radius: radius
                             });
                         }
                     });
-                    console.log(movieLatLngList);
 
                     directionsDisplay.setMap(map);
                     directionsDisplay.setDirections(response);

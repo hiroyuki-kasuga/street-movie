@@ -25,10 +25,7 @@ class CreateMovieService:
     def create_movie(self, json, form):
 
         for i, j in enumerate(json):
-            direction = None
-            if len(json) > i:
-                direction = self.__direction(j['lat'], j['lng'], json[i]['lat'], json[i]['lng'])
-            self.__get_street_view_image(j, i, direction)
+            self.__get_street_view_image(j, i)
 
         file_name = str(uuid.uuid4()) + '.mp4'
         dest = os.path.join(settings.MOVIE_DEST_PATH, file_name)
@@ -46,11 +43,11 @@ class CreateMovieService:
             return model
         raise OSError(status, output)
 
-    def __get_street_view_image(self, json, i, direction):
+    def __get_street_view_image(self, json, i):
 
         heading = ''
-        if direction:
-            heading = '&heading=' + str(direction)
+        if 'radius' in json:
+            heading = '&heading=' + str(json['radius'])
 
         url = settings.STREET_VIEW_URL % (json['lat'], json['lng'], heading)
 
