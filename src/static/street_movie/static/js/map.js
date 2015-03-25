@@ -320,7 +320,7 @@ var googlemap = (function () {
                                 radius: radius
                             });
 
-                            for (var i = 300; i < formatMeter; i++) {
+                            for (var i = 10; i < formatMeter; i++) {
                                 var latLng3 = google.maps.geometry.spherical.computeOffset(latLng1, i, radius);
                                 movieLatLngList.push({
                                     lat: latLng3.lat(),
