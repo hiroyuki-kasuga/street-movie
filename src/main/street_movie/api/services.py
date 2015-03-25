@@ -24,8 +24,14 @@ class CreateMovieService:
 
     def create_movie(self, json, form):
 
-        for i, j in enumerate(json):
-            self.__get_street_view_image(j, i)
+        i = 0
+        for k, j in enumerate(json):
+            try:
+                self.__get_street_view_image(j, i)
+                i = i + 1
+            except urllib2.HTTPError, e:
+                if e.code == 403:
+                    continue
 
         file_name = str(uuid.uuid4()) + '.mp4'
         dest = os.path.join(settings.MOVIE_DEST_PATH, file_name)
@@ -49,16 +55,13 @@ class CreateMovieService:
         if 'radius' in json:
             heading = '&heading=' + str(json['radius'])
 
-        url = settings.STREET_VIEW_URL % (json['lat'], json['lng'], heading)
+        url = settings.STREET_VIEW_URL % (json['lat'], json['lng'], settings.GOOGLE_API_KEY, heading)
 
         logger.debug('google url %s' % url)
         request = urllib2.Request(url)
-        response = None
         try:
             response = urllib2.urlopen(request)
         except urllib2.HTTPError, e:
-            if response and response.code == 403:
-                return
             logger.error(e)
             exc_type, exc_value, exc_traceback = sys.exc_info()
             lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
