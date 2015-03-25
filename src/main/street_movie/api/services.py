@@ -53,9 +53,12 @@ class CreateMovieService:
 
         logger.debug('google url %s' % url)
         request = urllib2.Request(url)
+        response = None
         try:
             response = urllib2.urlopen(request)
         except urllib2.HTTPError, e:
+            if response and response.code == 403:
+                return
             logger.error(e)
             exc_type, exc_value, exc_traceback = sys.exc_info()
             lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
