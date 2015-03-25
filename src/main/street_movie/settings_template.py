@@ -198,6 +198,6 @@ AWS_HEADERS = {
 }
 
 FFMPEG_COMMAND = '/path/to/ffmpeg -r 1 -i %s/%%05d.jpg -vcodec libx264 -qscale:v 0 %s'
-STREET_VIEW_URL = 'http://maps.googleapis.com/maps/api/streetview?size=600x300&location=%s,%%20%s&sensor=false%s'
+STREET_VIEW_URL = 'http://maps.googleapis.com/maps/api/streetview?size=600x300&location=%s,%%20%s&key=%s&sensor=false%s'
 
 GOOGLE_API_KEY = 'Your google api key'
