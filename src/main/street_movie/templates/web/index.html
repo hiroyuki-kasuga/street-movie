@@ -22,20 +22,38 @@
             <li></li>
         </ul>
     </div>
-    <div class="video-wrapper cmd-hide-wrapper">
-    </div>
-    <div class="video-container">
-        <div class="video">
-            <video id="video" autoplay controls>
-                <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>
-            </video>
+    {% if model %}
+        <div class="video-wrapper cmd-hide-wrapper" style="display: block;"></div>
+    {% else %}
+        <div class="video-wrapper cmd-hide-wrapper"></div>
+    {% endif %}
+    {% if model %}
+        <div class="video-container" style="display: block;">
+            <div class="video" style="display: block;">
+                <video id="video" autoplay controls src="{{ model.movie }}">
+                    <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>
+                </video>
+            </div>
+            <div class="sns-area">
+                <a href="{{ model.sns_url }}" class="cmd-open-twitter" title="S地点からE地点までの動画を作成しました。"><img
+                        src="{% static 'img/twitter.png' %}"></a>
+                <a href="{{ model.sns_url }}" class="cmd-open-facebook" title><img src="{% static 'img/facebook.png' %}"></a>
+            </div>
         </div>
-        <div class="sns-area">
-            <a href="#" class="cmd-open-twitter" title="S地点からE地点までの動画を作成しました。"><img
-                    src="{% static 'img/twitter.png' %}"></a>
-            <a href="#" class="cmd-open-facebook" title><img src="{% static 'img/facebook.png' %}"></a>
+    {% else %}
+        <div class="video-container">
+            <div class="video">
+                <video id="video" autoplay controls>
+                    <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>
+                </video>
+            </div>
+            <div class="sns-area">
+                <a href="#" class="cmd-open-twitter" title="S地点からE地点までの動画を作成しました。"><img
+                        src="{% static 'img/twitter.png' %}"></a>
+                <a href="#" class="cmd-open-facebook" title><img src="{% static 'img/facebook.png' %}"></a>
+            </div>
         </div>
-    </div>
+    {% endif %}
 
     <div class="term-wrapper cmd-hide-term-wrapper">
     </div>
@@ -75,6 +93,7 @@
     </div>
     <div class="operation-area">
         <p class="title">Street&nbsp;&nbsp;Movie</p>
+
         <div class="settings no-anim-circle">
             <a href="#" class="cmd-hide-operation-area"><img src="{% static 'img/icon-route.png' %}"></a>
         </div>

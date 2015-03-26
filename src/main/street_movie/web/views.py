@@ -18,8 +18,19 @@ logger = logging.getLogger(__name__)
 @add_log()
 def index(request):
     service = CreateMovieService()
+    model = None
+    if 'id' in request.GET:
+        try:
+            model = service.get_movie(request.GET['id'])
+            model = model.as_json
+            model['sns_url'] = request.build_absolute_uri(
+                reverse('street_movie_site_views_ogp', kwargs={'m_id': model['id']}))
+        except Movie.DoesNotExist:
+            pass
+
+    service = CreateMovieService()
     count = service.get_count()
-    c = RequestContext(request, {'count': count})
+    c = RequestContext(request, {'count': count, 'model': model})
     t = loader.get_template('web/index.html')
     return HttpResponse(t.render(c))
 
@@ -34,7 +45,7 @@ def ogp(request, m_id):
         raise Http404
 
     url = request.build_absolute_uri(reverse('street_movie_site_views_ogp', kwargs={'m_id': model.id}))
-    next_url = request.build_absolute_uri(reverse('street_movie_site_views_index'))
+    next_url = request.build_absolute_uri(reverse('street_movie_site_views_index')) + '?id=' + model.id
 
     image = settings.FB_OGP_IMAGE % (
         str(model.center_lat), str(model.center_lon), str(model.start_lat), str(model.start_lon), str(model.end_lat),
