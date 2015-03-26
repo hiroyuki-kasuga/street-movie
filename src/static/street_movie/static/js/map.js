@@ -41,7 +41,7 @@ var googlemap = (function () {
         directionsService = new google.maps.DirectionsService(),
         markerALatLon = currentCenter,
         markerBLatLon = new google.maps.LatLng(35.681382 - 0.001, 139.766084),
-        markerA, markerB, streetViewLayer, movieLatLngList = [], circle, isEnableCreateMovie = false;
+        markerA, markerB, streetViewLayer, movieLatLngList = [], circle, isEnableCreateMovie = false, startName, endName;
 
     return {
         init: function () {
@@ -75,6 +75,24 @@ var googlemap = (function () {
 //                });
             });
 
+            $('.cmd-open-twitter').on('click', function (e) {
+                e.preventDefault();
+                var title = $(this).prop('title'),
+                    loc = $(this).prop('href');
+                window.open('http://twitter.com/share?url=' + loc + '&text=' + title + '&', 'twitterwindow', 'height=450, width=550, top=' + ($(window).height() / 2 - 225) + ', left=' + $(window).width() / 2 + ', toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+            });
+
+            $('.cmd-open-facebook').on('click', function (e) {
+                e.preventDefault();
+                FB.ui({
+                    method: 'share',
+                    href: $(this).prop('href'),
+                    redirect_uri: $(this).prop('href')
+                }, function (response) {
+
+                });
+            });
+
             $('.cmd-over-settings').on('click', function (e) {
                 e.preventDefault();
                 $('.operation-area').addClass('move');
@@ -101,11 +119,28 @@ var googlemap = (function () {
 
             $('.cmd-hide-wrapper').on('click', function (e) {
                 e.preventDefault();
-                var $videoWrapper = $('.video-wrapper'),
+                var $videoContainer = $('.video-container'),
+                    $videoWrapper = $('.video-wrapper'),
                     $video = $('.video');
                 $video.hide();
                 $videoWrapper.hide();
+                $videoContainer.hide();
+            });
 
+            $('.cmd-open-term').on('click', function(e){
+                e.preventDefault();
+                var $termContainer = $('.term-container'),
+                    $wrapper = $('.term-wrapper');
+                $wrapper.show();
+                $termContainer.addClass('visible');
+            });
+
+            $('.cmd-hide-term-wrapper').on('click', function (e) {
+                e.preventDefault();
+                var $termContainer = $('.term-container'),
+                    $wrapper = $('.term-wrapper');
+                $wrapper.hide();
+                $termContainer.removeClass('visible');
             });
 
             $('.cmd-make-movie').on('click', function (e) {
@@ -119,7 +154,9 @@ var googlemap = (function () {
                     startLat = markerALatLon.lat().toFixed(6),
                     startLon = markerALatLon.lng().toFixed(6),
                     endLat = markerBLatLon.lat().toFixed(6),
-                    endLon = markerBLatLon.lng().toFixed(6);
+                    endLon = markerBLatLon.lng().toFixed(6),
+                    $btnFb = $('.cmd-open-facebook'),
+                    $btnTw = $('.cmd-open-twitter');
 
                 if (!isEnableCreateMovie) {
                     alert("開始地点と終了地点を指定してください。");
@@ -134,7 +171,11 @@ var googlemap = (function () {
                         start_lat: startLat,
                         start_lon: startLon,
                         end_lat: endLat,
-                        end_lon: endLon
+                        end_lon: endLon,
+                        start_name: startName,
+                        end_name: endName,
+                        center_lat: currentCenter.lat().toFixed(6),
+                        center_lon: currentCenter.lng().toFixed(6)
                     },
                     dataType: 'json',
                     type: 'POST'
@@ -143,7 +184,11 @@ var googlemap = (function () {
                     if (data.status === 1) {
                         $video.prop('src', data.data.movie);
                         $wrapper.show();
+                        $btnFb.prop('href', data.data.sns_url);
+                        $btnTw.prop('href', data.data.sns_url);
+                        $btnTw.prop('title', data.data.sns_title);
                         $video.parents().find('.video').show();
+                        $video.parents().find('.video-container').show();
                     }
                 });
             });
@@ -265,7 +310,8 @@ var googlemap = (function () {
                 if (status == google.maps.GeocoderStatus.OK) {
                     // results.length > 1 で返ってくる場合もありますが・・・。
                     if (results[0].geometry) {
-                        $startAddress.html(results[0].formatted_address.replace(/^日本, /, ''));
+                        startName = results[0].formatted_address.replace(/^日本, /, '');
+                        $startAddress.html(startName);
                         $startAddressArea.show();
                     }
                 }
@@ -274,7 +320,8 @@ var googlemap = (function () {
                 if (status == google.maps.GeocoderStatus.OK) {
                     // results.length > 1 で返ってくる場合もありますが・・・。
                     if (results[0].geometry) {
-                        $endAddress.html(results[0].formatted_address.replace(/^日本, /, ''));
+                        endName = results[0].formatted_address.replace(/^日本, /, '');
+                        $endAddress.html(endName);
                         $endAddressArea.show();
                     }
                 }
@@ -314,11 +361,11 @@ var googlemap = (function () {
                         }
 
                         if (k !== 0) {
-                            movieLatLngList.push({
-                                lat: latLng1.lat(),
-                                lng: latLng1.lng(),
-                                radius: radius
-                            });
+                            //movieLatLngList.push({
+                            //    lat: latLng1.lat(),
+                            //    lng: latLng1.lng(),
+                            //    radius: radius
+                            //});
 
                             for (var i = 50; i < formatMeter; i++) {
                                 var latLng3 = google.maps.geometry.spherical.computeOffset(latLng1, i, radius);

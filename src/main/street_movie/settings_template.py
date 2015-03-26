@@ -201,3 +201,8 @@ FFMPEG_COMMAND = '/path/to/ffmpeg -r 15 -i %s/%%05d.jpg -vcodec libx264 -qscale:
 STREET_VIEW_URL = 'http://maps.googleapis.com/maps/api/streetview?size=600x300&location=%s,%%20%s&key=%s&sensor=false%s'
 
 GOOGLE_API_KEY = 'Your google api key'
+
+FB_APP_ID = 'Your Facebook App ID'
+FB_OGP_TITLE = u'OGP title'
+FB_OGP_DESCRIPTION = u'from %s to %s'
+FB_OGP_IMAGE = u'http://maps.googleapis.com/maps/api/staticmap?center=%s,%s&zoom=15&size=600x315&maptype=roadmap&markers=color:white%%7Clabel:S%%7C%s,%s&markers=color:white%%7Clabel:E%%7C%s,%s&sensor=false'

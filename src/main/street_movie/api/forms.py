@@ -40,3 +40,27 @@ class CreateMovieForm(forms.Form):
         decimal_places=6,
         widget=forms.HiddenInput()
     )
+
+    start_name = forms.CharField(
+        label=u'スタート地点',
+        widget=forms.HiddenInput(attrs={'class': 'form-control'}),
+    )
+
+    end_name = forms.CharField(
+        label=u'エンド地点',
+        widget=forms.HiddenInput(attrs={'class': 'form-control'}),
+    )
+
+    center_lat = forms.DecimalField(
+        label=u"緯度(中心)",
+        max_digits=9,
+        decimal_places=6,
+        widget=forms.HiddenInput()
+    )
+
+    center_lon = forms.DecimalField(
+        label=u"軽度(中心)",
+        max_digits=9,
+        decimal_places=6,
+        widget=forms.HiddenInput()
+    )

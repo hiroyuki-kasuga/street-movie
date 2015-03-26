@@ -5,6 +5,31 @@ from django.conf import settings
 from django.db import models
 
 
+class ApiCount(models.Model):
+    target_date = models.DateField(
+        u'対象日',
+    )
+
+    counter = models.IntegerField(
+        u'APIカウント',
+    )
+
+    created_at = models.DateTimeField(
+        u"登録日時",
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        u"更新日時",
+        auto_now=True
+    )
+
+    class Meta:
+        db_table = u'api_count'
+        verbose_name = u'APIカウント'
+        verbose_name_plural = u'APIカウント'
+
+
 class Movie(models.Model):
     movie = models.FileField(
         u"動画",
@@ -37,6 +62,35 @@ class Movie(models.Model):
         max_digits=9,
         decimal_places=6,
         default=0.000000
+    )
+
+    center_lat = models.DecimalField(
+        u"緯度(中心)",
+        max_digits=9,
+        decimal_places=6,
+        default=0.000000
+    )
+
+    center_lon = models.DecimalField(
+        u"軽度(中心)",
+        max_digits=9,
+        decimal_places=6,
+        default=0.000000
+    )
+
+    start_name = models.TextField(
+        u'スタート地点',
+        default=None
+    )
+
+    end_name = models.TextField(
+        u'エンド地点',
+        default=None
+    )
+
+    deleted = models.BooleanField(
+        u'削除フラグ',
+        default=False,
     )
 
     created_at = models.DateTimeField(
