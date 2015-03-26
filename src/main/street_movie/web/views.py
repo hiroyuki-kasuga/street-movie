@@ -45,7 +45,7 @@ def ogp(request, m_id):
         raise Http404
 
     url = request.build_absolute_uri(reverse('street_movie_site_views_ogp', kwargs={'m_id': model.id}))
-    next_url = request.build_absolute_uri(reverse('street_movie_site_views_index')) + '?id=' + model.id
+    next_url = request.build_absolute_uri(reverse('street_movie_site_views_index')) + '?id=' + m_id
 
     image = settings.FB_OGP_IMAGE % (
         str(model.center_lat), str(model.center_lon), str(model.start_lat), str(model.start_lon), str(model.end_lat),
