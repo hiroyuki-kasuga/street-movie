@@ -40,6 +40,7 @@ def ogp(request, m_id):
         str(model.center_lat), str(model.center_lon), str(model.start_lat), str(model.start_lon), str(model.end_lat),
         str(model.end_lon))
 
+    logger.info(image)
     description = settings.FB_OGP_DESCRIPTION % (model.start_name, model.end_name)
     ogp = dict(title=settings.FB_OGP_TITLE, description=description, next_url=next_url, url=url,
                app_id=settings.FB_APP_ID, image=image)
