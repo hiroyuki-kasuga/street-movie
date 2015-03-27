@@ -47,14 +47,9 @@ def ogp(request, m_id):
     url = request.build_absolute_uri(reverse('street_movie_site_views_ogp', kwargs={'m_id': model.id}))
     next_url = request.build_absolute_uri(reverse('street_movie_site_views_index')) + '?id=' + m_id
 
-    image = settings.FB_OGP_IMAGE % (
-        str(model.center_lat), str(model.center_lon), str(model.start_lat), str(model.start_lon), str(model.end_lat),
-        str(model.end_lon))
-
-    logger.info(image)
     description = settings.FB_OGP_DESCRIPTION % (model.start_name, model.end_name)
     ogp = dict(title=settings.FB_OGP_TITLE, description=description, next_url=next_url, url=url,
-               app_id=settings.FB_APP_ID, image=image)
+               app_id=settings.FB_APP_ID, image=model.ogp_image.url)
 
     c = RequestContext(request, {'ogp': ogp})
     t = loader.get_template('web/ogp.html')

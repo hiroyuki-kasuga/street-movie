@@ -70,6 +70,7 @@ class CreateMovieService:
         command = settings.FFMPEG_COMMAND % (self.dir_path, dest)
         (status, output) = commands.getstatusoutput(command)
         if status == 0:
+            ogp_file, ogp_file_name = self.__get_ogp_image(form)
             model = Movie()
             model.start_lat = form.cleaned_data['start_lat']
             model.start_lon = form.cleaned_data['start_lon']
@@ -80,7 +81,9 @@ class CreateMovieService:
             model.center_lat = form.cleaned_data['center_lat']
             model.center_lon = form.cleaned_data['center_lon']
             model.movie.save(file_name, File(open(dest)))
+            model.ogp_image.save(ogp_file_name, File(open(ogp_file)))
             model.save()
+            os.remove(ogp_file)
             os.remove(dest)
             return model
         raise OSError(status, output)
@@ -122,6 +125,32 @@ class CreateMovieService:
 
         for i, f in enumerate(file_list):
             os.rename(os.path.join(self.dir_path, f), '%s/%05d.jpg' % (self.dir_path, i))
+
+    def __get_ogp_image(self, form):
+        url = settings.FB_OGP_IMAGE % (
+            form.cleaned_data['center_lat'], form.cleaned_data['center_lon'], form.cleaned_data['start_lat'],
+            form.cleaned_data['start_lon'], form.cleaned_data['end_lat'], form.cleaned_data['end_lon'])
+        request = urllib2.Request(url)
+        try:
+            response = urllib2.urlopen(request)
+        except urllib2.HTTPError, e:
+            logger.error(e)
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
+            logger.error(''.join('!! ' + line for line in lines))
+            raise e
+        except urllib2.URLError, e:
+            logger.error(e)
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
+            logger.error(''.join('!! ' + line for line in lines))
+            raise e
+        file_name = str(uuid.uuid4()) + '.jpg'
+        file = os.path.join(self.dir_path, file_name)
+        f = open(file, "wb")
+        f.write(response.read())
+        f.close()
+        return file, file_name
 
     def __get_street_view_image(self, json, i):
         heading = ''

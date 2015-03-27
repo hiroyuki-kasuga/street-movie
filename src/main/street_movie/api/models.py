@@ -3,6 +3,7 @@
 import time
 from django.conf import settings
 from django.db import models
+import storages.backends.s3boto
 
 
 class ApiCount(models.Model):
@@ -34,6 +35,15 @@ class Movie(models.Model):
     movie = models.FileField(
         u"動画",
         upload_to='%Y/%m/%d'
+    )
+
+    ogp_image = models.FileField(
+        u"動画イメージ",
+        upload_to='%Y/%m/%d',
+        default=None,
+        storage=storages.backends.s3boto.S3BotoStorage(
+            acl='public-read'
+        )
     )
 
     start_lat = models.DecimalField(

@@ -156,7 +156,8 @@ var googlemap = (function () {
                     endLat = markerBLatLon.lat().toFixed(6),
                     endLon = markerBLatLon.lng().toFixed(6),
                     $btnFb = $('.cmd-open-facebook'),
-                    $btnTw = $('.cmd-open-twitter');
+                    $btnTw = $('.cmd-open-twitter'),
+                    $caution = $('.caution');
 
                 if (!isEnableCreateMovie) {
                     alert("開始地点と終了地点を指定してください。");
@@ -189,6 +190,7 @@ var googlemap = (function () {
                         $btnTw.prop('title', data.data.sns_title);
                         $video.parents().find('.video').show();
                         $video.parents().find('.video-container').show();
+                        $caution.html(data.data.count);
                     }
                 });
             });
@@ -361,13 +363,13 @@ var googlemap = (function () {
                         }
 
                         if (k !== 0) {
-                            //movieLatLngList.push({
-                            //    lat: latLng1.lat(),
-                            //    lng: latLng1.lng(),
-                            //    radius: radius
-                            //});
+                            movieLatLngList.push({
+                                lat: latLng1.lat(),
+                                lng: latLng1.lng(),
+                                radius: radius
+                            });
 
-                            for (var i = 50; i < formatMeter; i++) {
+                            for (var i = 100; i < formatMeter; i++) {
                                 var latLng3 = google.maps.geometry.spherical.computeOffset(latLng1, i, radius);
                                 movieLatLngList.push({
                                     lat: latLng3.lat(),

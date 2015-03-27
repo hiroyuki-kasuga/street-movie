@@ -30,6 +30,8 @@ def create(request):
             model_json['sns_url'] = request.build_absolute_uri(
                 reverse('street_movie_site_views_ogp', kwargs={'m_id': model.id}))
             model_json['sns_title'] = settings.FB_OGP_TITLE
+            create_service.save_count()
+            model_json['count'] = create_service.get_count()
             return __response_json(dict(status=1, data=model_json))
         except Exception, e:
             create_service.save_count()
@@ -43,12 +45,18 @@ def create(request):
 
 
 @add_log()
-def detail(request, id):
+def detail(request, m_id):
     try:
-        model = Movie.objects.get(id=id)
+        model = Movie.objects.get(id=m_id)
     except Movie.DoesNotExist, e:
-        return __response_json(dict(status=0, message=u'movie not found id = %s ' % id()))
+        return __response_json(dict(status=0, message=u'movie not found id = %s ' % m_id))
     return __response_json(dict(status=1, data=model.as_json))
+
+
+@add_log()
+def count(request):
+    service = CreateMovieService()
+    return __response_json(dict(status=1, data={'count': service.get_count()}))
 
 
 def __response_json(dict):
