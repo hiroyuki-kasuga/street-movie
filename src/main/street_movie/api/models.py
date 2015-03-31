@@ -113,6 +113,11 @@ class Movie(models.Model):
         auto_now=True
     )
 
+    distance = models.IntegerField(
+        u"距離",
+        default=0
+    )
+
     class Meta:
         db_table = u'street_movie'
         verbose_name = u'動画'

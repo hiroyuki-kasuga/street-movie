@@ -47,7 +47,7 @@ def ogp(request, m_id):
     url = request.build_absolute_uri(reverse('street_movie_site_views_ogp', kwargs={'m_id': model.id}))
     next_url = request.build_absolute_uri(reverse('street_movie_site_views_index')) + '?id=' + m_id
 
-    description = settings.FB_OGP_DESCRIPTION % (model.start_name, model.end_name)
+    description = settings.FB_OGP_DESCRIPTION % (model.start_name, model.end_name, model.distance, settings.MAP_SPEED)
     ogp = dict(title=settings.FB_OGP_TITLE, description=description, next_url=next_url, url=url,
                app_id=settings.FB_APP_ID, image=model.ogp_image.url)
 

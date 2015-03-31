@@ -41,7 +41,7 @@ var googlemap = (function () {
         directionsService = new google.maps.DirectionsService(),
         markerALatLon = currentCenter,
         markerBLatLon = new google.maps.LatLng(35.681382 - 0.001, 139.766084),
-        markerA, markerB, streetViewLayer, movieLatLngList = [], circle, isEnableCreateMovie = false, startName, endName;
+        markerA, markerB, streetViewLayer, movieLatLngList = [], circle, isEnableCreateMovie = false, startName, endName, distance;
 
     return {
         init: function () {
@@ -176,7 +176,8 @@ var googlemap = (function () {
                         start_name: startName,
                         end_name: endName,
                         center_lat: currentCenter.lat().toFixed(6),
-                        center_lon: currentCenter.lng().toFixed(6)
+                        center_lon: currentCenter.lng().toFixed(6),
+                        distance: distance
                     },
                     dataType: 'json',
                     type: 'POST'
@@ -346,8 +347,9 @@ var googlemap = (function () {
             };
             directionsService.route(request, function (response, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
-                    var numOfRoutes = response.routes.length;
                     movieLatLngList = [];
+                    distance = response.routes[0].legs[0].distance.value;
+
                     $.each(response.routes[0].overview_path, function (k, v) {
                         //console.log('http://maps.googleapis.com/maps/api/streetview?size=600x300&location=' + v.lat() + ',%20' + v.lng() + '&sensor=false');
                         var latLng1 = new google.maps.LatLng(v.lat(), v.lng()), latLng2, meter, formatMeter, radius;

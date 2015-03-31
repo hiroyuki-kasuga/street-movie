@@ -24,6 +24,7 @@ class CreateMovieService:
         self.movie_thumbnail_list = []
         self.dir_path = tempfile.mkdtemp()
         self.count = 0
+        self.frame = 0
 
     def get_movie(self, m_id):
         return Movie.objects.get(id=m_id)
@@ -67,7 +68,13 @@ class CreateMovieService:
 
         file_name = str(uuid.uuid4()) + '.mp4'
         dest = os.path.join(settings.MOVIE_DEST_PATH, file_name)
-        command = settings.FFMPEG_COMMAND % (self.dir_path, dest)
+
+        km = form.cleaned_data['distance'] / 1000.0
+        sec = ( km / settings.MAP_SPEED) * 3600.0
+        frame_rate = float(self.frame) / sec
+
+        command = settings.FFMPEG_COMMAND % (round(frame_rate, 4), self.dir_path, dest)
+        logger.debug(command)
         (status, output) = commands.getstatusoutput(command)
         if status == 0:
             ogp_file, ogp_file_name = self.__get_ogp_image(form)
@@ -80,6 +87,7 @@ class CreateMovieService:
             model.end_name = form.cleaned_data['end_name']
             model.center_lat = form.cleaned_data['center_lat']
             model.center_lon = form.cleaned_data['center_lon']
+            model.distance = form.cleaned_data['distance']
             model.movie.save(file_name, File(open(dest)))
             model.ogp_image.save(ogp_file_name, File(open(ogp_file)))
             model.save()
@@ -123,6 +131,7 @@ class CreateMovieService:
             if '.jpg' in f:
                 file_list.append(f)
         file_list.sort()
+        self.frame = len(file_list)
 
         for i, f in enumerate(file_list):
             os.rename(os.path.join(self.dir_path, f), '%s/%05d.jpg' % (self.dir_path, i))

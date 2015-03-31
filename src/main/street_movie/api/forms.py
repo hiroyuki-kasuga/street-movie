@@ -64,3 +64,8 @@ class CreateMovieForm(forms.Form):
         decimal_places=6,
         widget=forms.HiddenInput()
     )
+
+    distance = forms.IntegerField(
+        label=u"距離",
+        widget=forms.HiddenInput()
+    )
