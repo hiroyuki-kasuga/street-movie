@@ -122,6 +122,7 @@ class CreateMovieService:
         for f in os.listdir(self.dir_path):
             if '.jpg' in f:
                 file_list.append(f)
+        file_list.sort()
 
         for i, f in enumerate(file_list):
             os.rename(os.path.join(self.dir_path, f), '%s/%05d.jpg' % (self.dir_path, i))
