@@ -127,7 +127,7 @@ var googlemap = (function () {
                 $videoContainer.hide();
             });
 
-            $('.cmd-open-term').on('click', function(e){
+            $('.cmd-open-term').on('click', function (e) {
                 e.preventDefault();
                 var $termContainer = $('.term-container'),
                     $wrapper = $('.term-wrapper');
@@ -241,6 +241,9 @@ var googlemap = (function () {
                 googlemap.createMarkerB();
                 googlemap.showCircle();
                 googlemap.hideAddress();
+                if(googlemap.isSP()){
+                    $('.cmd-hide-operation-area').trigger('click');
+                }
             });
         },
         createMarkerA: function () {
@@ -408,6 +411,14 @@ var googlemap = (function () {
             }
             var dirN0 = (dirE0 + 90) % 360; //(dirE0+90)÷360の余りを出力 北向きが０度の方向
             return dirN0;
+        },
+        isSP: function () {
+            if ((navigator.userAgent.indexOf('iPhone') > 0 && navigator.userAgent.indexOf('iPad') == -1)
+                || navigator.userAgent.indexOf('iPod') > 0
+                || navigator.userAgent.indexOf('Android') > 0) {
+                return true;
+            }
+            return false;
         }
     };
 })();

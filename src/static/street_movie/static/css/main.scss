@@ -1,5 +1,9 @@
 @charset "utf-8";
 
+$small: "only screen and (max-width:640px)";
+$middle: "only screen and (min-width:641px) and (max-width:959px)";
+$large: "only screen and (min-width:960px)";
+
 html, body, #map {
   height: 100%;
   margin: 0;
@@ -76,6 +80,13 @@ div.mask {
   -o-transition: all 0.5s linear;
   -ms-transition: all 0.5s linear;
   transition: all 0.5s linear;
+  @media #{$small} {
+    width: 80%;
+    height: 80%;
+    top: auto;
+    left: auto;
+    margin: 10% 10%;
+  }
 
   .term {
     width: 600px;
@@ -85,6 +96,12 @@ div.mask {
     padding: 5px;
     font-size: 0.8em;
     overflow: auto;
+    @media #{$small} {
+      width: 95%;
+      height: auto;
+      padding: 0;
+    }
+
     p {
       color: #ffffff;
     }
@@ -96,13 +113,6 @@ div.mask {
 }
 
 .visible.term-container {
-  width: 620px;
-  height: 350px;
-  margin-left: -310px;
-  margin-top: -175px;
-  top: 50%;
-  left: 50%;
-  position: fixed;
   z-index: 1001;
   filter: alpha(opacity=90);
   -moz-opacity: 0.9;
@@ -111,11 +121,11 @@ div.mask {
   background-image: -moz-linear-gradient(left, rgb(35, 37, 38), rgb(65, 67, 69));
   background-color: rgb(255, 255, 255);
   background-color: rgb(255, 255, 255);
-  -webkit-transition: all 0.5s linear;
-  -moz-transition: all 0.5s linear;
-  -o-transition: all 0.5s linear;
-  -ms-transition: all 0.5s linear;
-  transition: all 0.5s linear;
+  //  -webkit-transition: all 0.5s linear;
+  //  -moz-transition: all 0.5s linear;
+  //  -o-transition: all 0.5s linear;
+  //  -ms-transition: all 0.5s linear;
+  //  transition: all 0.5s linear;
   animation-duration: 0.5s;
   animation-name: fade-in;
   -moz-animation-duration: 0.5s;
@@ -320,6 +330,16 @@ div.mask {
   width: 50px;
   height: 50px;
   margin: 0 auto;
+  .setting-icon {
+    background-image: url("../img/icon-route.png");
+    @media #{$small} {
+      background-image: url("../img/close.png");
+    }
+    background-repeat: no-repeat;
+    width: 40px;
+    height: 40px;
+    margin: 10px 5px;
+  }
 }
 
 /* キーフレームを使ったローディングのくるくる回るアニメーション */
@@ -352,7 +372,6 @@ div.operation-area {
   opacity: 0.9;
   background-image: -webkit-linear-gradient(left, rgb(35, 37, 38), rgb(65, 67, 69));
   background-image: -moz-linear-gradient(left, rgb(35, 37, 38), rgb(65, 67, 69));
-  background-color: rgb(255, 255, 255);
   background-color: rgb(255, 255, 255);
   -webkit-transition: all 0.5s linear;
   -moz-transition: all 0.5s linear;
@@ -486,4 +505,50 @@ div.settings {
     display: block;
     opacity: 1;
   }
+}
+
+@media #{$small} {
+  div.operation-area {
+    z-index: 11;
+    position: absolute;
+    top: 0;
+    height: 80%;
+    width: 80%;
+    margin: 10% 10%;
+    padding: 60px 40px;
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    opacity: 0;
+    background-image: -webkit-linear-gradient(left, #232526, #414345);
+    background-image: -moz-linear-gradient(left, #232526, #414345);
+    background-color: white;
+    -webkit-transition: all 0.5s linear;
+    -moz-transition: all 0.5s linear;
+    -o-transition: all 0.5s linear;
+    -ms-transition: all 0.5s linear;
+    transition: all 0.5s linear;
+    animation-duration: 0.5s;
+    animation-name: fade-in;
+    -moz-animation-duration: 0.5s;
+    -moz-animation-name: fade-in;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-name: fade-in;
+  }
+
+  div.operation-area.move {
+    filter: alpha(opacity=90);
+    -moz-opacity: 0.9;
+    opacity: 0.9;
+    -webkit-transition: all 0.5s linear;
+    -moz-transition: all 0.5s linear;
+    -o-transition: all 0.5s linear;
+    -ms-transition: all 0.5s linear;
+    transition: all 0.5s linear;
+  }
+}
+
+@media #{$middle} {
+}
+
+@media #{$large} {
 }
