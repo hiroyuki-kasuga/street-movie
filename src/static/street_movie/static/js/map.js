@@ -192,6 +192,8 @@ var googlemap = (function () {
                         $video.parents().find('.video').show();
                         $video.parents().find('.video-container').show();
                         $caution.html(data.data.count);
+                    } else {
+                        alert('エラーが発生しました。');
                     }
                 });
             });

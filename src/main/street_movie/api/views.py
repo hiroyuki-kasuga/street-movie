@@ -39,9 +39,9 @@ def create(request):
             exc_type, exc_value, exc_traceback = sys.exc_info()
             lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
             logger.error(''.join('!! ' + line for line in lines))
-            return __response_json(dict(status=0, message=e))
+            return __response_json(dict(status=0))
 
-    return __response_json(dict(status=0, message=[(k, v[0]) for k, v in form.errors.items()]))
+    return __response_json(dict(status=0))
 
 
 @add_log()
@@ -49,7 +49,7 @@ def detail(request, m_id):
     try:
         model = Movie.objects.get(id=m_id)
     except Movie.DoesNotExist, e:
-        return __response_json(dict(status=0, message=u'movie not found id = %s ' % m_id))
+        return __response_json(dict(status=0))
     return __response_json(dict(status=1, data=model.as_json))
 
 
