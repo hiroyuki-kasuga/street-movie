@@ -206,7 +206,11 @@
     </script>
     <script>
         {% if model %}
-            var comeFacebook = true;
+            var comeFacebook = true,
+                    startLon = {{ model.start_lon }},
+                    startLat = {{ model.start_lat }},
+                    endLon = {{ model.end_lon }},
+                    endLat = {{ model.end_lat }};
         {% else %}
             var comeFacebook = false;
         {% endif %}
