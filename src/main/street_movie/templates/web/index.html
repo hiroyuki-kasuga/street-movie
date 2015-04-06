@@ -17,6 +17,7 @@
     <div class="init-loading">
         <div class="init-loading-images">
             <img src="{% static 'img/loader_hachisuka1.png' %}">
+
             <div class="init-loading-progress">
 
             </div>
@@ -30,11 +31,7 @@
             <li></li>
         </ul>
     </div>
-    {% if model %}
-        <div class="video-wrapper cmd-hide-wrapper" style="display: block;"></div>
-    {% else %}
-        <div class="video-wrapper cmd-hide-wrapper"></div>
-    {% endif %}
+    <div class="video-wrapper cmd-hide-wrapper"></div>
     {% if model %}
         <div class="video-container" style="display: block;">
             <div class="video" style="display: block;">
@@ -145,7 +142,9 @@
                             data-url="{% url 'street_movie_api_create' %}">動画を作成
                     </button>
                 {% else %}
-                    <button class="btn  btn-primary cmd-make-movie" data-url="{% url 'street_movie_api_create' %}">動画を作成</button>
+                    <button class="btn  btn-primary cmd-make-movie" data-url="{% url 'street_movie_api_create' %}">
+                        動画を作成
+                    </button>
                 {% endif %}
             </div>
             <p>※24時間に25,000 件のストリートビュー画像しか取得できないため、正常に動画が生成されない場合があります。</p>
@@ -204,6 +203,13 @@
         ga('create', 'UA-61220628-1', 'auto');
         ga('send', 'pageview');
 
+    </script>
+    <script>
+        {% if model %}
+            var comeFacebook = true;
+        {% else %}
+            var comeFacebook = false;
+        {% endif %}
     </script>
     <script src="{% static "js/progressbar.js" %}"></script>
     <script src="{% static "js/json2.js" %}"></script>

@@ -263,22 +263,24 @@ var googlemap = (function () {
             googlemap.createMarkerA();
             googlemap.createMarkerB();
 
-            var $video = $('#video'),
-                $wrapper = $('.video-wrapper');
+            if (comeFacebook) {
+                var $video = $('#video'),
+                    $wrapper = $('.video-wrapper');
 
-            $wrapper.show();
-            $video.parents().find('.video').show();
-            $video.parents().find('.video-container').show();
+                $wrapper.show();
+                $video.parents().find('.video').show();
+                $video.parents().find('.video-container').show();
 
-            if (window.matchMedia("(max-width:640px)").matches) {
-                var screenWidth = screen.width,
-                    videoWidth = 600,
-                    videoHeight = 300,
-                    realVideoWidth = screenWidth * 0.9,
-                    ratio = realVideoWidth / videoWidth,
-                    realVideoHeight = videoHeight * ratio,
-                    $videoWrap = $('.video');
-                $videoWrap.css('height', realVideoHeight);
+                if (window.matchMedia("(max-width:640px)").matches) {
+                    var screenWidth = screen.width,
+                        videoWidth = 600,
+                        videoHeight = 300,
+                        realVideoWidth = screenWidth * 0.9,
+                        ratio = realVideoWidth / videoWidth,
+                        realVideoHeight = videoHeight * ratio,
+                        $videoWrap = $('.video');
+                    $videoWrap.css('height', realVideoHeight);
+                }
             }
         },
         hideCircle: function () {
