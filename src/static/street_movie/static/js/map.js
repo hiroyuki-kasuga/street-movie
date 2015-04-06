@@ -41,7 +41,8 @@ var googlemap = (function () {
         directionsService = new google.maps.DirectionsService(),
         markerALatLon = currentCenter,
         markerBLatLon = new google.maps.LatLng(35.681382 - 0.001, 139.766084),
-        markerA, markerB, streetViewLayer, movieLatLngList = [], circle, isEnableCreateMovie = false, startName, endName, distance;
+        markerA, markerB, streetViewLayer, movieLatLngList = [], circle, isEnableCreateMovie = false,
+        startName, endName, distance, interval, loaderCircle, isInitLoad = false, initTimeout;
 
     return {
         init: function () {
@@ -54,6 +55,51 @@ var googlemap = (function () {
                     googlemap.showCircle();
                 }, 200);
             });
+
+            google.maps.event.addListener(map, "tilesloaded", function () {
+                if (!isInitLoad) {
+                    clearTimeout(initTimeout);
+                    isInitLoad = true;
+                    loaderCircle.animate(1, {}, function () {
+                        googlemap.loaderEndAnimation();
+                    });
+                }
+            });
+
+            initTimeout = setTimeout(function () {
+                if (!isInitLoad) {
+                    isInitLoad = true;
+                    loaderCircle.animate(1, {}, function () {
+                        googlemap.loaderEndAnimation();
+                    });
+                }
+            }, 5000);
+
+            interval = setInterval(function () {
+                var $target = $('.init-loading > .init-loading-images > img'),
+                    src = $target.prop('src'),
+                    index = src.indexOf('hachisuka1') === -1 ? 'hachisuka1' : 'hachisuka2';
+                if (index == 'hachisuka1') {
+                    src = src.replace('hachisuka2', 'hachisuka1');
+                } else {
+                    src = src.replace('hachisuka1', 'hachisuka2');
+                }
+                $target.prop('src', src);
+            }, 300);
+
+            loaderCircle = new ProgressBar.Circle('.init-loading-progress', {
+                color: '#FCB03C',
+                strokeWidth: 3,
+                trailWidth: 1,
+                duration: 3000,
+                text: {
+                    value: '0'
+                },
+                step: function (state, bar) {
+                    bar.setText((bar.value() * 100).toFixed(0));
+                }
+            });
+
 
             google.maps.event.addListener(map, 'dragend', function (e) {
                 currentCenter = map.getCenter();
@@ -192,12 +238,26 @@ var googlemap = (function () {
                         $video.parents().find('.video').show();
                         $video.parents().find('.video-container').show();
                         $caution.html(data.data.count);
+
+                        if (window.matchMedia("(max-width:640px)").matches) {
+                            var screenWidth = screen.width,
+                                videoWidth = 600,
+                                videoHeight = 300,
+                                realVideoWidth = screenWidth * 0.9,
+                                ratio = realVideoWidth / videoWidth,
+                                realVideoHeight = videoHeight * ratio,
+                                $videoWrap = $('.video');
+                            $videoWrap.css('height', realVideoHeight);
+                        }
                     } else {
                         alert('エラーが発生しました。');
                     }
                 });
             });
-
+        },
+        loaderEndAnimation: function () {
+            clearInterval(interval);
+            $('.init-loading').hide();
             $('.cmd-over-settings').trigger('click');
             googlemap.showCircle();
             googlemap.createMarkerA();
@@ -241,7 +301,7 @@ var googlemap = (function () {
                 googlemap.createMarkerB();
                 googlemap.showCircle();
                 googlemap.hideAddress();
-                if(googlemap.isSP()){
+                if (googlemap.isSP()) {
                     $('.cmd-hide-operation-area').trigger('click');
                 }
             });
@@ -256,6 +316,7 @@ var googlemap = (function () {
                 position: markerALatLon,
                 title: "Start Point",
                 draggable: true,
+                animation: google.maps.Animation.DROP,
                 icon: markerAImg
             });
             google.maps.event.addListener(markerA, 'dragstart', function (e) {
@@ -279,6 +340,7 @@ var googlemap = (function () {
                 position: markerBLatLon,
                 title: "End Point",
                 draggable: true,
+                animation: google.maps.Animation.DROP,
                 icon: markerBImg
             });
             google.maps.event.addListener(markerB, 'dragstart', function (e) {

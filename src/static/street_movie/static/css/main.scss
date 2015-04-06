@@ -12,7 +12,7 @@ html, body, #map {
 }
 
 div.copyright {
-  position: absolute;
+  //  position: absolute;
   bottom: 0;
   z-index: 100002;
 }
@@ -81,11 +81,12 @@ div.mask {
   -ms-transition: all 0.5s linear;
   transition: all 0.5s linear;
   @media #{$small} {
-    width: 80%;
+    width: 90%;
     height: 80%;
     top: auto;
     left: auto;
-    margin: 10% 10%;
+    margin: 10% 5%;
+    overflow: scroll;
   }
 
   .term {
@@ -95,8 +96,8 @@ div.mask {
     margin-top: 10px;
     padding: 5px;
     font-size: 0.8em;
-    overflow: auto;
     @media #{$small} {
+      font-size: 0.68em;
       width: 95%;
       height: auto;
       padding: 0;
@@ -158,9 +159,6 @@ div.mask {
   position: fixed;
   z-index: 1001;
   display: none;
-  //  filter: alpha(opacity=90);
-  //  -moz-opacity: 0.9;
-  //  opacity: 0.9;
   background-image: -webkit-linear-gradient(left, rgb(35, 37, 38), rgb(65, 67, 69));
   background-image: -moz-linear-gradient(left, rgb(35, 37, 38), rgb(65, 67, 69));
   background-color: rgb(255, 255, 255);
@@ -171,9 +169,23 @@ div.mask {
   -ms-transition: all 0.5s linear;
   transition: all 0.5s linear;
 
+  @media #{$small} {
+    width: 90%;
+    height: auto;
+    margin: 5% 5%;
+    left: auto;
+    top: auto;
+  }
+
   .sns-area {
     margin-top: 10px;
     margin-right: 15px;
+
+    @media #{$small} {
+      height: 28px;
+      margin-top: 5px;
+      margin-right: 0;
+    }
 
     a {
       margin: 0 10px;
@@ -189,12 +201,57 @@ div.mask {
     margin-top: 10px;
     background-color: rgb(0, 0, 0);
 
+    @media #{$small} {
+      width: 100%;
+      height: auto;
+      margin: auto;
+      left: auto;
+      top: auto;
+    }
+
     #video {
       z-index: 1002;
       width: 600px;
       height: 300px;
       margin: 0 auto;
+      @media #{$small} {
+        width: 100%;
+        height: auto;
+      }
       background-color: rgb(0, 0, 0);
+    }
+  }
+}
+
+.init-loading {
+  background: radial-gradient(#FFFFFF, #ffeeee);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+
+  .init-loading-images {
+    width: 500px;
+    height: 433px;
+    margin: 0 auto;
+    @media #{$small} {
+      width: 80%;
+      height: auto;
+    }
+
+    @media #{$middle} {
+      height: auto;
+      width: 40%;
+    }
+    .init-loading-progress {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto;
+    }
+    img {
+      width: 100%;
     }
   }
 }
@@ -321,24 +378,30 @@ div.mask {
 
 .no-anim-circle {
   background-color: rgba(0, 0, 0, 0);
-  //  border: 5px solid rgba(0, 183, 229, 0.9);
   opacity: .9;
   border-right: 5px solid rgba(0, 0, 0, 0);
   border-left: 5px solid rgba(0, 0, 0, 0);
   border-radius: 50px;
-  //  box-shadow: 0 0 35px #2187e7;
   width: 50px;
   height: 50px;
   margin: 0 auto;
+  //  @media #{$small} {
+  //        border-radius: 20px;
+  //        width: 20px;
+  //        height: 20px;
+  //  }
   .setting-icon {
     background-image: url("../img/icon-route.png");
-    @media #{$small} {
-      background-image: url("../img/close.png");
-    }
     background-repeat: no-repeat;
     width: 40px;
     height: 40px;
     margin: 10px 5px;
+    //    @media #{$small} {
+    //      background-image: url("../img/close.png");
+    //      width: 20px;
+    //      height: 20px;
+    //      margin: 5px 2px;
+    //    }
   }
 }
 
@@ -378,6 +441,7 @@ div.operation-area {
   -o-transition: all 0.5s linear;
   -ms-transition: all 0.5s linear;
   transition: all 0.5s linear;
+  overflow: scroll;
 
   p {
     color: #ffffff;
@@ -509,12 +573,13 @@ div.settings {
 
 @media #{$small} {
   div.operation-area {
-    z-index: 11;
+    z-index: -1;
     position: absolute;
     top: 0;
-    height: 80%;
-    width: 80%;
-    margin: 10% 10%;
+    right: auto;
+    height: 100%;
+    width: 100%;
+    //    margin: 10% 10%;
     padding: 60px 40px;
     filter: alpha(opacity=0);
     -moz-opacity: 0;
@@ -536,6 +601,7 @@ div.settings {
   }
 
   div.operation-area.move {
+    z-index: 11;
     filter: alpha(opacity=90);
     -moz-opacity: 0.9;
     opacity: 0.9;
