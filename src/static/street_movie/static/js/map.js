@@ -260,8 +260,6 @@ var googlemap = (function () {
             $('.init-loading').hide();
             $('.cmd-over-settings').trigger('click');
             googlemap.showCircle();
-            googlemap.createMarkerA();
-            googlemap.createMarkerB();
 
             if (comeFacebook) {
                 var $video = $('#video'),
@@ -281,6 +279,15 @@ var googlemap = (function () {
                         $videoWrap = $('.video');
                     $videoWrap.css('height', realVideoHeight);
                 }
+                markerALatLon = new google.maps.LatLng(startLat, startLon);
+                markerBLatLon = new google.maps.LatLng(endLat, endLon);
+            }
+            googlemap.createMarkerA();
+            googlemap.createMarkerB();
+
+            if (comeFacebook) {
+                googlemap.startRoute();
+                googlemap.getAddress();
             }
         },
         hideCircle: function () {
