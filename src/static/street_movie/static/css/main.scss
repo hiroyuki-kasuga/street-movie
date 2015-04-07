@@ -1,7 +1,7 @@
 @charset "utf-8";
 
-$small: "only screen and (max-width:640px)";
-$middle: "only screen and (min-width:641px) and (max-width:959px)";
+$small: "only screen and (max-width:480px)";
+$middle: "only screen and (min-width:481px) and (max-width:959px)";
 $large: "only screen and (min-width:960px)";
 
 html, body, #map {
@@ -9,6 +9,7 @@ html, body, #map {
   margin: 0;
   padding: 0;
   font-family: 'Noto Sans Japanese', serif;
+  overflow: hidden;
 }
 
 div.copyright {
@@ -61,7 +62,7 @@ div.mask {
 
 .term-container {
   width: 620px;
-  height: 350px;
+  height: 370px;
   margin-left: -310px;
   margin-top: -175px;
   top: 50%;
@@ -82,10 +83,10 @@ div.mask {
   transition: all 0.5s linear;
   @media #{$small} {
     width: 90%;
-    height: 80%;
+    height: 90%;
     top: auto;
     left: auto;
-    margin: 10% 5%;
+    margin: 5%;
     overflow: scroll;
   }
 
@@ -110,6 +111,7 @@ div.mask {
   .btn-area {
     width: 100px;
     margin: 0 auto;
+    padding: 10px;
   }
 }
 
@@ -149,6 +151,31 @@ div.mask {
   background: #ffffff;
 }
 
+div.small-video-container {
+  width: 100%;
+  height: auto;
+  top: auto;
+  left: auto;
+
+  div.sns-area {
+    height: 28px;
+    margin-top: 5px;
+    margin-right: 0;
+  }
+
+  div.video {
+    width: 100%;
+    height: auto;
+    left: auto;
+    top: auto;
+
+    video#video {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
 .video-container {
   width: 620px;
   height: 350px;
@@ -169,23 +196,9 @@ div.mask {
   -ms-transition: all 0.5s linear;
   transition: all 0.5s linear;
 
-  @media #{$small} {
-    width: 90%;
-    height: auto;
-    margin: 5% 5%;
-    left: auto;
-    top: auto;
-  }
-
   .sns-area {
     margin-top: 10px;
     margin-right: 15px;
-
-    @media #{$small} {
-      height: 28px;
-      margin-top: 5px;
-      margin-right: 0;
-    }
 
     a {
       margin: 0 10px;
@@ -201,23 +214,11 @@ div.mask {
     margin-top: 10px;
     background-color: rgb(0, 0, 0);
 
-    @media #{$small} {
-      width: 100%;
-      height: auto;
-      margin: auto;
-      left: auto;
-      top: auto;
-    }
-
     #video {
       z-index: 1002;
       width: 600px;
       height: 300px;
       margin: 0 auto;
-      @media #{$small} {
-        width: 100%;
-        height: auto;
-      }
       background-color: rgb(0, 0, 0);
     }
   }
