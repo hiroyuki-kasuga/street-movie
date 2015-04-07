@@ -234,6 +234,9 @@ div.small-video-container {
     left: 50%;
     margin-left: -0.5em;
     margin-top: -0.5em; }
+    .loading .spinner li.percentage {
+      font-size: 0.3em;
+      margin: 1em 1em; }
     .loading .spinner li {
       position: absolute;
       width: .2em;

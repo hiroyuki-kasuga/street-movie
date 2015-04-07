@@ -208,7 +208,10 @@ var googlemap = (function () {
                     endLon = markerBLatLon.lng().toFixed(6),
                     $btnFb = $('.cmd-open-facebook'),
                     $btnTw = $('.cmd-open-twitter'),
-                    $caution = $('.caution');
+                    $caution = $('.caution'),
+                    $percentage = $('.percentage'),
+                    percentageInterval,
+                    percent = 1;
 
                 if (!isEnableCreateMovie) {
                     alert("開始地点と終了地点を指定してください。");
@@ -216,6 +219,13 @@ var googlemap = (function () {
                 }
 
                 $loading.show();
+                $percentage.html(1);
+                percentageInterval = setInterval(function () {
+                    if(percent <= 90) {
+                        $percentage.html(percent);
+                        percent = percent + 1;
+                    }
+                }, 200);
                 $.ajax(url, {
                     data: {
                         latLng: latLng,
@@ -233,21 +243,30 @@ var googlemap = (function () {
                     dataType: 'json',
                     type: 'POST'
                 }).done(function (data) {
-                    $loading.hide();
-                    if (data.status === 1) {
-                        $video.prop('src', data.data.movie);
-                        $wrapper.show();
-                        $btnFb.prop('href', data.data.sns_url);
-                        $btnTw.prop('href', data.data.sns_url);
-                        $btnTw.prop('title', data.data.sns_title);
-                        $video.parents().find('.video').show();
-                        $videoContainer.show();
-                        $caution.html(data.data.count);
+                    clearInterval(percentageInterval);
 
-                        googlemap.changeVideoSize();
-                    } else {
-                        alert('エラーが発生しました。');
-                    }
+                    var i = setInterval(function () {
+                        var p = Number($percentage.html());
+                        if (p >= 100) {
+                            clearInterval(i);
+                            $loading.hide();
+                            if (data.status === 1) {
+                                $video.prop('src', data.data.movie);
+                                $wrapper.show();
+                                $btnFb.prop('href', data.data.sns_url);
+                                $btnTw.prop('href', data.data.sns_url);
+                                $btnTw.prop('title', data.data.sns_title);
+                                $video.parents().find('.video').show();
+                                $videoContainer.show();
+                                $caution.html(data.data.count);
+
+                                googlemap.changeVideoSize();
+                            } else {
+                                alert('エラーが発生しました。');
+                            }
+                        }
+                        $percentage.html(p + 1);
+                    }, 80);
                 });
             });
         },
