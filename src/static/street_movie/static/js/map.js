@@ -458,14 +458,17 @@ var googlemap = (function () {
                         //console.log('http://maps.googleapis.com/maps/api/streetview?size=600x300&location=' + v.lat() + ',%20' + v.lng() + '&sensor=false');
                         var latLng1 = new google.maps.LatLng(v.lat(), v.lng()), latLng2, meter, formatMeter, radius;
 
-                        if (response.routes[0].overview_path.length - 1 == k) {
-                            var tmpLatLng = movieLatLngList[movieLatLngList.length - 1];
-                            radius = tmpLatLng.radius;
-                        } else {
+                        //if (response.routes[0].overview_path.length - 1 == k) {
+                        if (k == 0) {
+                            //var tmpLatLng = movieLatLngList[movieLatLngList.length - 1];
                             latLng2 = new google.maps.LatLng(response.routes[0].overview_path[k + 1].lat(), response.routes[0].overview_path[k + 1].lng());
-                            meter = google.maps.geometry.spherical.computeDistanceBetween(latLng1, latLng2);
-                            formatMeter = meter.toFixed(0);
                             radius = googlemap.geoDirection(latLng1.lat(), latLng1.lng(), latLng2.lat(), latLng2.lng());
+                        } else {
+                            //latLng2 = new google.maps.LatLng(response.routes[0].overview_path[k + 1].lat(), response.routes[0].overview_path[k + 1].lng());
+                            latLng2 = new google.maps.LatLng(response.routes[0].overview_path[k - 1].lat(), response.routes[0].overview_path[k - 1].lng());
+                            meter = google.maps.geometry.spherical.computeDistanceBetween(latLng2, latLng1);
+                            formatMeter = meter.toFixed(0);
+                            radius = googlemap.geoDirection(latLng2.lat(), latLng2.lng(), latLng1.lat(), latLng1.lng());
                         }
 
                         if (k !== 0) {

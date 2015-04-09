@@ -336,11 +336,11 @@ div.operation-area {
   background-image: -webkit-linear-gradient(left, #232526, #414345);
   background-image: -moz-linear-gradient(left, #232526, #414345);
   background-color: white;
-  -webkit-transition: all 0.5s linear;
-  -moz-transition: all 0.5s linear;
-  -o-transition: all 0.5s linear;
-  -ms-transition: all 0.5s linear;
-  transition: all 0.5s linear;
+  -webkit-transition: all 0.3s linear;
+  -moz-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  transition: all 0.3s linear;
   overflow: scroll; }
   div.operation-area p {
     color: #ffffff;

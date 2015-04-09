@@ -442,11 +442,11 @@ div.operation-area {
   background-image: -webkit-linear-gradient(left, rgb(35, 37, 38), rgb(65, 67, 69));
   background-image: -moz-linear-gradient(left, rgb(35, 37, 38), rgb(65, 67, 69));
   background-color: rgb(255, 255, 255);
-  -webkit-transition: all 0.5s linear;
-  -moz-transition: all 0.5s linear;
-  -o-transition: all 0.5s linear;
-  -ms-transition: all 0.5s linear;
-  transition: all 0.5s linear;
+  -webkit-transition: all 0.3s linear;
+  -moz-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  transition: all 0.3s linear;
   overflow: scroll;
 
   p {
