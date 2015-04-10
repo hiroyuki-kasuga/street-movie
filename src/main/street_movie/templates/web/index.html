@@ -8,7 +8,7 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <!-- Optional theme -->
-{#    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">#}
+    {#    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">#}
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css">
     <link rel="stylesheet" href="{% static "css/material-fullpalette.min.css" %}">
@@ -17,13 +17,14 @@
 
 {% block main %}
     <div class="init-loading">
-        <div class="init-loading-images">
-            <img src="{% static 'img/loader_hachisuka1.png' %}">
-
-            <div class="init-loading-progress">
-
-            </div>
-        </div>
+        <p class="init-loading-title">Street&nbsp;&nbsp;Movie</p>
+        <ul class="spinner">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li class="percentage init-percentage">1</li>
+        </ul>
     </div>
     <div class="loading">
         <ul class="spinner">
@@ -111,7 +112,8 @@
             <p>1.スポットを検索してください。</p>
 
             <div class="input-group">
-                <input type="text" name="search_spot" id="search_spot" class="form-control floating-label" style="color:white" data-hint="検索場所" placeholder="検索場所">
+                <input type="text" name="search_spot" id="search_spot" class="form-control floating-label"
+                       style="color:white" data-hint="検索場所" placeholder="検索場所">
                 <span class="input-group-addon"><a href="javascript:void(0)" class="cmd-search"><i
                         class="glyphicon glyphicon-search"></i></a></span>
             </div>
@@ -142,10 +144,11 @@
             <div class="center-button">
                 {% if count >= 25000 %}
                     <a href="javascript:void(0)" class="btn btn-primary cmd-make-movie" disabled="disabled"
-                            data-url="{% url 'street_movie_api_create' %}">動画を作成
+                       data-url="{% url 'street_movie_api_create' %}">動画を作成
                     </a>
                 {% else %}
-                    <a href="javascript:void(0)" class="btn btn-primary btn-raised cmd-make-movie" data-url="{% url 'street_movie_api_create' %}">
+                    <a href="javascript:void(0)" class="btn btn-primary btn-raised cmd-make-movie"
+                       data-url="{% url 'street_movie_api_create' %}">
                         動画を作成
                     </a>
                 {% endif %}

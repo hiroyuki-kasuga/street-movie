@@ -41,8 +41,8 @@ var googlemap = (function () {
         directionsService = new google.maps.DirectionsService(),
         markerALatLon = currentCenter,
         markerBLatLon = new google.maps.LatLng(35.681382 - 0.001, 139.766084),
-        markerA, markerB, streetViewLayer, movieLatLngList = [], circle, isEnableCreateMovie = false,
-        startName, endName, distance, interval, loaderCircle, isInitLoad = false, initTimeout, isLandScape = false,
+        markerA, markerB, streetViewLayer, movieLatLngList = [], isEnableCreateMovie = false,
+        startName, endName, distance, interval, isInitLoad = false, isLandScape = false,
         operationArea = $('.operation-area'),
         settings = $('.settings'),
         $cmdOverSettings = $('.cmd-over-settings'),
@@ -64,49 +64,38 @@ var googlemap = (function () {
             });
             googlemap.isLandscape();
 
+            var initPercentage = 1,
+                $initPercentage = $('.init-percentage');
+
             google.maps.event.addListener(map, "tilesloaded", function () {
                 if (!isInitLoad) {
-                    clearTimeout(initTimeout);
-                    isInitLoad = true;
-                    loaderCircle.animate(1, {}, function () {
-                        googlemap.loaderEndAnimation();
-                    });
+                    clearInterval(interval);
+                    var tempInterval = setInterval(function () {
+                        if (initPercentage >= 100) {
+                            if (!isInitLoad) {
+                                clearInterval(tempInterval);
+                                isInitLoad = true;
+                                googlemap.loaderEndAnimation();
+                            }
+                        }
+                        $initPercentage.html(initPercentage);
+                        initPercentage = initPercentage + 1;
+                    }, 20);
                 }
             });
 
-            initTimeout = setTimeout(function () {
-                if (!isInitLoad) {
-                    isInitLoad = true;
-                    loaderCircle.animate(1, {}, function () {
-                        googlemap.loaderEndAnimation();
-                    });
-                }
-            }, 5000);
-
+            $initPercentage.html(initPercentage);
             interval = setInterval(function () {
-                var $target = $('.init-loading > .init-loading-images > img'),
-                    src = $target.prop('src'),
-                    index = src.indexOf('hachisuka1') === -1 ? 'hachisuka1' : 'hachisuka2';
-                if (index == 'hachisuka1') {
-                    src = src.replace('hachisuka2', 'hachisuka1');
-                } else {
-                    src = src.replace('hachisuka1', 'hachisuka2');
+                if (initPercentage >= 100) {
+                    if (!isInitLoad) {
+                        clearInterval(interval);
+                        isInitLoad = true;
+                        googlemap.loaderEndAnimation();
+                    }
                 }
-                $target.prop('src', src);
-            }, 300);
-
-            loaderCircle = new ProgressBar.Circle('.init-loading-progress', {
-                color: '#FCB03C',
-                strokeWidth: 3,
-                trailWidth: 1,
-                duration: 3000,
-                text: {
-                    value: '0'
-                },
-                step: function (state, bar) {
-                    bar.setText((bar.value() * 100).toFixed(0));
-                }
-            });
+                $initPercentage.html(initPercentage);
+                initPercentage = initPercentage + 1;
+            }, 500);
 
 
             google.maps.event.addListener(map, 'dragend', function (e) {
@@ -254,7 +243,15 @@ var googlemap = (function () {
                 $loading.show();
                 $percentage.html(1);
                 percentageInterval = setInterval(function () {
-                    if (percent <= 90) {
+
+                    if (percent == 80) {
+                        var tempInterval = setInterval(function () {
+                            if(percent <= 90){
+                                $percentage.html(percent);
+                                percent = percent + 1;
+                            }
+                        }, 500);
+                    } else if (percent <= 80) {
                         $percentage.html(percent);
                         percent = percent + 1;
                     }
@@ -304,7 +301,6 @@ var googlemap = (function () {
             });
         },
         loaderEndAnimation: function () {
-            clearInterval(interval);
             $('.init-loading').hide();
             $('.cmd-over-settings').trigger('click');
             googlemap.showCircle();

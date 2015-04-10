@@ -4,6 +4,83 @@ $small: "only screen and (max-width:480px)";
 $middle: "only screen and (min-width:481px) and (max-width:959px)";
 $large: "only screen and (min-width:960px)";
 
+@mixin spinner($marginTop, $fontSize, $margin) {
+  font-size: 100px;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  list-style: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -0.5em;
+  margin-top: $marginTop;
+
+  li.percentage {
+    font-size: $fontSize;
+    margin: $margin $margin;
+  }
+
+  li {
+    position: absolute;
+    width: .2em;
+    height: .2em;
+    border-radius: 50%;
+
+    &:nth-child(1) {
+      left: 50%;
+      top: 0;
+      margin: 0 0 0 -.1em;
+      background: #00C176;
+      -webkit-transform-origin: 50% 250%;
+      transform-origin: 50% 250%;
+      -webkit-animation: rota 1.13s linear infinite,
+      opa 3.67s ease-in-out infinite alternate;
+      animation: rota 1.13s linear infinite,
+      opa 3.67s ease-in-out infinite alternate;
+    }
+
+    &:nth-child(2) {
+      top: 50%;
+      right: 0;
+      margin: -.1em 0 0 0;
+      background: #FF003C;
+      -webkit-transform-origin: -150% 50%;
+      transform-origin: -150% 50%;
+      -webkit-animation: rota 1.86s linear infinite,
+      opa 4.29s ease-in-out infinite alternate;
+      animation: rota 1.86s linear infinite,
+      opa 4.29s ease-in-out infinite alternate;
+    }
+
+    &:nth-child(3) {
+      left: 50%;
+      bottom: 0;
+      margin: 0 0 0 -.1em;
+      background: #FABE28;
+      -webkit-transform-origin: 50% -150%;
+      transform-origin: 50% -150%;
+      -webkit-animation: rota 1.45s linear infinite,
+      opa 5.12s ease-in-out infinite alternate;
+      animation: rota 1.45s linear infinite,
+      opa 5.12s ease-in-out infinite alternate;
+    }
+
+    &:nth-child(4) {
+      top: 50%;
+      left: 0;
+      margin: -.1em 0 0 0;
+      background: #88C100;
+      -webkit-transform-origin: 250% 50%;
+      transform-origin: 250% 50%;
+      -webkit-animation: rota 1.72s linear infinite,
+      opa 5.25s ease-in-out infinite alternate;
+      animation: rota 1.72s linear infinite,
+      opa 5.25s ease-in-out infinite alternate;
+    }
+  }
+}
+
 html, body, #map {
   height: 100%;
   margin: 0;
@@ -233,27 +310,21 @@ div.small-video-container {
   height: 100%;
   z-index: 1000;
 
-  .init-loading-images {
-    width: 500px;
-    height: 433px;
-    margin: 0 auto;
-    @media #{$small} {
-      width: 80%;
-      height: auto;
-    }
+  .init-loading-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 5em;
+    height: 3em;
+    font-family: 'Lobster', cursive;
+    font-size: 5em;
+  }
 
-    @media #{$middle} {
-      height: auto;
-      width: 40%;
-    }
-    .init-loading-progress {
-      width: 100px;
-      height: 100px;
-      margin: 0 auto;
-    }
-    img {
-      width: 100%;
-    }
+  .spinner {
+    @include spinner(0em, 0.2em, 1.7em);
   }
 }
 
@@ -271,81 +342,7 @@ div.small-video-container {
   opacity: 0.8;
 
   .spinner {
-    font-size: 100px;
-    width: 1em;
-    height: 1em;
-    border-radius: 50%;
-    //    border: .01em solid rgba(150, 150, 150, 0.1);
-    list-style: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-left: -0.5em;
-    margin-top: -0.5em;
-
-    li.percentage {
-      font-size: 0.3em;
-      margin: 1em 1em;
-    }
-
-    li {
-      position: absolute;
-      width: .2em;
-      height: .2em;
-      border-radius: 50%;
-
-      &:nth-child(1) {
-        left: 50%;
-        top: 0;
-        margin: 0 0 0 -.1em;
-        background: #00C176;
-        -webkit-transform-origin: 50% 250%;
-        transform-origin: 50% 250%;
-        -webkit-animation: rota 1.13s linear infinite,
-        opa 3.67s ease-in-out infinite alternate;
-        animation: rota 1.13s linear infinite,
-        opa 3.67s ease-in-out infinite alternate;
-      }
-
-      &:nth-child(2) {
-        top: 50%;
-        right: 0;
-        margin: -.1em 0 0 0;
-        background: #FF003C;
-        -webkit-transform-origin: -150% 50%;
-        transform-origin: -150% 50%;
-        -webkit-animation: rota 1.86s linear infinite,
-        opa 4.29s ease-in-out infinite alternate;
-        animation: rota 1.86s linear infinite,
-        opa 4.29s ease-in-out infinite alternate;
-      }
-
-      &:nth-child(3) {
-        left: 50%;
-        bottom: 0;
-        margin: 0 0 0 -.1em;
-        background: #FABE28;
-        -webkit-transform-origin: 50% -150%;
-        transform-origin: 50% -150%;
-        -webkit-animation: rota 1.45s linear infinite,
-        opa 5.12s ease-in-out infinite alternate;
-        animation: rota 1.45s linear infinite,
-        opa 5.12s ease-in-out infinite alternate;
-      }
-
-      &:nth-child(4) {
-        top: 50%;
-        left: 0;
-        margin: -.1em 0 0 0;
-        background: #88C100;
-        -webkit-transform-origin: 250% 50%;
-        transform-origin: 250% 50%;
-        -webkit-animation: rota 1.72s linear infinite,
-        opa 5.25s ease-in-out infinite alternate;
-        animation: rota 1.72s linear infinite,
-        opa 5.25s ease-in-out infinite alternate;
-      }
-    }
+    @include spinner(-0.5em, 0.3em, 1em);
   }
 }
 
