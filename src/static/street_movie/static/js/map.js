@@ -42,7 +42,11 @@ var googlemap = (function () {
         markerALatLon = currentCenter,
         markerBLatLon = new google.maps.LatLng(35.681382 - 0.001, 139.766084),
         markerA, markerB, streetViewLayer, movieLatLngList = [], circle, isEnableCreateMovie = false,
-        startName, endName, distance, interval, loaderCircle, isInitLoad = false, initTimeout, isLandScape = false;
+        startName, endName, distance, interval, loaderCircle, isInitLoad = false, initTimeout, isLandScape = false,
+        operationArea = $('.operation-area'),
+        settings = $('.settings'),
+        $cmdOverSettings = $('.cmd-over-settings'),
+        $cmdHideOperationArea = $('.cmd-hide-operation-area');
 
     return {
         init: function () {
@@ -143,20 +147,49 @@ var googlemap = (function () {
                 });
             });
 
-            $('.cmd-over-settings').on('click', function (e) {
+            $cmdOverSettings.on('click', function (e) {
                 e.preventDefault();
-                $('.operation-area').addClass('move');
-                googlemap.showCircle();
+                if (googlemap.isSP() && isLandScape) {
+                    operationArea.addClass('move');
+                    return;
+                }
+                settings.addClass('turn-left');
             });
 
-            $('.cmd-hide-operation-area').on('click', function (e) {
+            $cmdHideOperationArea.on('click', function (e) {
                 e.preventDefault();
-                $('.operation-area').removeClass('move');
-                googlemap.hideCircle();
+                if (googlemap.isSP() && isLandScape) {
+                    operationArea.removeClass('move');
+                    return;
+                }
+                settings.addClass('turn-right');
+            });
+
+            $cmdOverSettings.bind("oTransitionEnd mozTransitionEnd webkitTransitionEnd transitionend", function (e) {
+                e.preventDefault();
+                if (settings.hasClass('turn-left')) {
+                    operationArea.addClass('move');
+                }
+            });
+
+            $cmdHideOperationArea.bind("oTransitionEnd mozTransitionEnd webkitTransitionEnd transitionend", function (e) {
+                e.preventDefault();
+                if (settings.hasClass('turn-right')) {
+                    operationArea.removeClass('move');
+                }
+            });
+
+            operationArea.bind("oTransitionEnd mozTransitionEnd webkitTransitionEnd transitionend", function (e) {
+                e.preventDefault();
+                if (operationArea.hasClass('move')) {
+                    settings.removeClass('turn-left');
+                } else {
+                    settings.removeClass('turn-right');
+                }
             });
 
             $('.cmd-search').on('click', function (e) {
-                e.preventDefault();
+                //e.preventDefault();
                 googlemap.search();
             });
 
@@ -221,7 +254,7 @@ var googlemap = (function () {
                 $loading.show();
                 $percentage.html(1);
                 percentageInterval = setInterval(function () {
-                    if(percent <= 90) {
+                    if (percent <= 90) {
                         $percentage.html(percent);
                         percent = percent + 1;
                     }
@@ -473,13 +506,13 @@ var googlemap = (function () {
 
                         if (k !== 0) {
                             movieLatLngList.push({
-                                lat: latLng1.lat(),
-                                lng: latLng1.lng(),
+                                lat: latLng2.lat(),
+                                lng: latLng2.lng(),
                                 radius: radius
                             });
 
                             for (var i = 100; i < formatMeter; i++) {
-                                var latLng3 = google.maps.geometry.spherical.computeOffset(latLng1, i, radius);
+                                var latLng3 = google.maps.geometry.spherical.computeOffset(latLng2, i, radius);
                                 movieLatLngList.push({
                                     lat: latLng3.lat(),
                                     lng: latLng3.lng(),
@@ -574,3 +607,5 @@ var googlemap = (function () {
 })();
 
 google.maps.event.addDomListener(window, "load", googlemap.init);
+$.material.init();
+$.material.ripples();
