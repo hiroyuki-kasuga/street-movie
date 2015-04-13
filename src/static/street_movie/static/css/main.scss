@@ -324,7 +324,7 @@ div.small-video-container {
   }
 
   .spinner {
-    @include spinner(0em, 0.2em, 1.7em);
+    @include spinner(0em, 0.2em, 1.9em);
   }
 }
 
@@ -342,7 +342,7 @@ div.small-video-container {
   opacity: 0.8;
 
   .spinner {
-    @include spinner(-0.5em, 0.3em, 1em);
+    @include spinner(-0.5em, 0.3em, 1.2em);
   }
 }
 
