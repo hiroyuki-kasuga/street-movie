@@ -18,7 +18,12 @@ $large: "only screen and (min-width:960px)";
 
   li.percentage {
     font-size: $fontSize;
-    margin: $margin $margin;
+//    margin: $margin $margin;
+    text-align: center;
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    margin-top: -0.5em;
   }
 
   li {
