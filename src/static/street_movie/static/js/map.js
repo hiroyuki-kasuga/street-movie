@@ -67,6 +67,19 @@ var googlemap = (function () {
             var initPercentage = 1,
                 $initPercentage = $('.init-percentage');
 
+            $initPercentage.html(initPercentage);
+            interval = setInterval(function () {
+                if (initPercentage >= 100) {
+                    if (!isInitLoad) {
+                        clearInterval(interval);
+                        isInitLoad = true;
+                        googlemap.loaderEndAnimation();
+                    }
+                }
+                $initPercentage.html(initPercentage);
+                initPercentage = initPercentage + 1;
+            }, 500);
+
             google.maps.event.addListener(map, "tilesloaded", function () {
                 if (!isInitLoad) {
                     clearInterval(interval);
@@ -83,20 +96,6 @@ var googlemap = (function () {
                     }, 20);
                 }
             });
-
-            $initPercentage.html(initPercentage);
-            interval = setInterval(function () {
-                if (initPercentage >= 100) {
-                    if (!isInitLoad) {
-                        clearInterval(interval);
-                        isInitLoad = true;
-                        googlemap.loaderEndAnimation();
-                    }
-                }
-                $initPercentage.html(initPercentage);
-                initPercentage = initPercentage + 1;
-            }, 500);
-
 
             google.maps.event.addListener(map, 'dragend', function (e) {
                 currentCenter = map.getCenter();
