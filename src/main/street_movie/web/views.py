@@ -30,7 +30,9 @@ def index(request):
 
     service = CreateMovieService()
     count = service.get_count()
-    c = RequestContext(request, {'count': count, 'model': model})
+    url = request.build_absolute_uri(None)
+    og_url = url + 'img/ogp.png'
+    c = RequestContext(request, {'count': count, 'model': model, 'url': url, 'og_url': og_url})
     t = loader.get_template('web/index.html')
     return HttpResponse(t.render(c))
 
