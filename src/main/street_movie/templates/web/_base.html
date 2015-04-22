@@ -4,13 +4,16 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta name="keywords" content="ストリートムービー,ストリートビュー,動画,ムービー" />
+    <meta name="description" content="ストリートビュー画像を使ってオリジナルのムービーを作成しよう！" />
+
     {% block ogp %}
-        {#    <meta property="og:type" content="article"/>#}
-        {#    <meta property="fb:app_id" content="{{ 'FB_APP_ID'|get_settings }}"/>#}
-        {#    <meta property="og:title" content="{{ 'FB_OGP_SITE_TITLE'|get_settings }}"/>#}
-        {#    <meta property="og:description" content="{{ 'FB_OGP_SITE_DESCRIPTION'|get_settings }}"/>#}
-        {#    <meta property="og:url" content="{{ url }}"/>#}
-        {#    <meta property="og:image" content="{% static 'img/ogp.jpg' %}"/>#}
+            <meta property="og:type" content="article"/>
+            <meta property="fb:app_id" content="{{ 'FB_APP_ID'|get_settings }}"/>
+            <meta property="og:title" content="ストリートビュー画像を使ってオリジナルのムービーを作成しよう！"/>
+            <meta property="og:description" content="ストリートビュー画像を使ってオリジナルのムービーを作成しよう！"/>
+            <meta property="og:url" content="{{ url }}"/>
+            <meta property="og:image" content="{{ og_url }}"/>
     {% endblock ogp %}
 
     <title>{% block title %}StreetMovie{% endblock %}</title>
